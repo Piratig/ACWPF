@@ -1,134 +1,184 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Prism;
 using Prism.Mvvm;
 
 namespace ACWPF
 {
-    class ModelForMainWin : BindableBase
+    class ModelForMainWin : INotifyPropertyChanged
     {
         private int requestID;
         private string department;
         private string cartridge;
-        private string inventaryID;
+        //private string inventaryID;
         private string requestDate;
         private string status;
 
         public int RequestID
         {
             get { return requestID; }
-            set { requestID = value; }
+            set
+            {
+                requestID = value;
+                OnPropertyChanged("RequestID");
+            }
         }
         public string Department
         {
             get { return department; }
-            set { department = value; }
+            set
+            {
+                department = value;
+                OnPropertyChanged("Department");
+            }
         }
         public string Cartridge
         {
             get { return cartridge; }
-            set { cartridge = value; }
+            set
+            {
+                cartridge = value;
+                OnPropertyChanged("Cartridge");
+            }
         }
-        public string InventaryID
-        {
-            get { return inventaryID; }
-            set { inventaryID = value; }
-        }
+        //public string InventaryID
+        //{
+        //    get { return inventaryID; }
+        //    set
+        //    {
+        //        inventaryID = value;
+        //        OnPropertyChanged("InventaryID");
+        //    }
+        //}
         public string RequestDate
         {
             get { return requestDate; }
-            set { requestDate = value; }
+            set
+            {
+                requestDate = value;
+                OnPropertyChanged("RequestDate");
+            }
         }
         public string Status
         {
             get { return status; }
-            set { status = value; }
+            set
+            {
+                status = value;
+                OnPropertyChanged("Status");
+            }
         }
 
-        public async void InventaryCheck(string inv)
+        public  ObservableCollection<string> valueInventary = new ObservableCollection<string>();
+        public  ObservableCollection<string> ValueInventary;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public  void InventaryCheck(string InventaryID)
         {
             SqlConnection sqlConnection;
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\Database1.mdf;Integrated Security=True";
-            sqlConnection = new SqlConnection(connectionString);
-            await sqlConnection.OpenAsync();
+            //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\Database1.mdf;Integrated Security=True";
+            sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
+            sqlConnection.Open();
 
-            InventaryID = inv;
-            SqlDataReader sqlReader = null;
-            string str = String.Format("SELECT InventaryNumber, Cartridge, DeliveryDate FROM [Cartridges] WHERE InventaryNumber = N'{0}' AND DeliveryDate = (SELECT MAX(DeliveryDate) FROM [Cartridges])", InventaryID);
-            SqlCommand command = new SqlCommand(str, sqlConnection);
-
-            try
+            if (InventaryID != null && InventaryID != "")
             {
-                sqlReader = await command.ExecuteReaderAsync();
-                while (await sqlReader.ReadAsync())
+                SqlDataReader sqlReader = null;
+                string str = String.Format("SELECT InventaryNumber, Cartridge, DeliveryDate FROM [Cartridges] WHERE InventaryNumber = N'{0}' AND DeliveryDate = (SELECT MAX(DeliveryDate) FROM [Cartridges])", InventaryID);
+                SqlCommand command = new SqlCommand(str, sqlConnection);
+
+                try
                 {
-                    string date = Convert.ToString(sqlReader["DeliveryDate"]);
+                    sqlReader = command.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        string date = Convert.ToString(sqlReader["DeliveryDate"]);
+                        ValueInventary.Insert(0, Convert.ToString(sqlReader["InventaryNumber"]) + " | " + Convert.ToString(sqlReader["Cartridge"]) + " | " + date.Substring(0, 10) + "\n");
+                        OnPropertyChanged("ValueInventary");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(Convert.ToString(ex), "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    if (sqlReader != null)
+                        sqlReader.Close();
                 }
             }
-            catch (Exception ex)
+            else
             {
-
-            }
-            finally
-            {
-                if (sqlReader != null)
-                    sqlReader.Close();
+                MessageBox.Show("Поле не заполнено!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        public void Issue()
-        {
+        //public void Issue()
+        //{
+        //    status = "Выдано";
+        //    Insert();
+        //}
 
+        //public void Rezerv()
+        //{
+        //    status = "Резерв";
+        //    Insert();
+        //}
+
+        //public void Purchase()
+        //{
+        //    status = "Закупка";
+        //    Insert();
+        //}
+
+        //public void OrderFromStock()
+        //{
+        //    status = "Заказ со склада";
+        //    Insert();
+        //}
+
+        //public async void Insert()
+        //{
+        //    SqlConnection sqlConnection;
+        //    string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\Database1.mdf;Integrated Security=True";
+        //    sqlConnection = new SqlConnection(connectionString);
+        //    await sqlConnection.OpenAsync();
+        //    SqlCommand command = new SqlCommand("INSERT INTO [Cartridges] (RequestId, InventaryNumber, Department, Cartridge, DeliveryDate, Status)VALUES(@RequestId, @InventaryNumber, @Department, @Cartridge, @DeliveryDate, @Status)", sqlConnection);
+        //    command.Parameters.AddWithValue("RequestId", RequestID);
+        //    command.Parameters.AddWithValue("InventaryNumber", InventaryID);
+        //    command.Parameters.AddWithValue("Department", Department);
+        //    command.Parameters.AddWithValue("Cartridge", Cartridge);
+        //    command.Parameters.AddWithValue("DeliveryDate", RequestDate);
+        //    command.Parameters.AddWithValue("Status", Status);
+        //    command.ExecuteNonQuery();
+        //}
+
+        public void AboutApp()
+        {
+            MessageBox.Show("Accounting cartridges v.1.0\nСоздал: Харьковский Игорь Сергеевичь.\nПо всем вопросам обращяться по почте kharkovskiy-is@mosmetro.ru или his1994@mail.ru", "О программе", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
 
-        public void Rezerv()
+        public void OpenRequest()
         {
-
+            Request request = new Request();
+            request.ShowDialog();
         }
 
-        public void Purchase()
+        public void Exit()
         {
-
-        }
-
-        public void OrderFromStock()
-        {
-
-        }
-
-        public async void ResizeArray()
-        {
-            //if (label7.Visible)
-            //    label7.Visible = false;
-
-            //if (!string.IsNullOrEmpty(txbDepartment.Text) && !string.IsNullOrWhiteSpace(txbDepartment.Text) &&
-            //    !string.IsNullOrEmpty(txbRequest.Text) && !string.IsNullOrWhiteSpace(txbRequest.Text) &&
-            //    !string.IsNullOrEmpty(txbCartridge.Text) && !string.IsNullOrWhiteSpace(txbCartridge.Text) &&
-            //    !string.IsNullOrEmpty(txbQuantity.Text) && !string.IsNullOrWhiteSpace(txbQuantity.Text))
-            //{
-            SqlConnection sqlConnection;
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\Database1.mdf;Integrated Security=True";
-            sqlConnection = new SqlConnection(connectionString);
-            await sqlConnection.OpenAsync();
-            SqlCommand command = new SqlCommand("INSERT INTO [Cartridges] (RequestId, InventaryNumber, Department, Cartridge, DeliveryDate, Status)VALUES(@RequestId, @InventaryNumber, @Department, @Cartridge, @DeliveryDate, @Status)", sqlConnection);
-            command.Parameters.AddWithValue("RequestId", RequestID);
-            command.Parameters.AddWithValue("InventaryNumber", InventaryID);
-            command.Parameters.AddWithValue("Department", Department);
-            command.Parameters.AddWithValue("Cartridge", Cartridge);
-            command.Parameters.AddWithValue("DeliveryDate", RequestDate);
-            command.Parameters.AddWithValue("Status", Status);
-            command.ExecuteNonQuery();
-            //}
-            //else
-            //{
-            //    label7.Visible = true;
-            //    label7.Text = "Не все поля заполнены!";
-            //}
+            
         }
     }
 }

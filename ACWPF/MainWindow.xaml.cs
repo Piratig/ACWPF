@@ -26,6 +26,12 @@ namespace ACWPF
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainVM();
+        }
+
+        private void InventaryCheck_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainVM)DataContext).InventaryIdCheck();
         }
     }
 }
