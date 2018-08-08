@@ -16,6 +16,7 @@ namespace ACWPF
     class MainVM : INotifyPropertyChanged
     {
         private string inventaryID;
+        private string myValue;
         private ModelForMainWin modelMain;
         public ObservableCollection<ModelForMainWin> Requests { get; set; }
         public ModelForMainWin SelectedRequest
@@ -51,10 +52,19 @@ namespace ACWPF
         {
             ModelForMainWin model = new ModelForMainWin();
             model.InventaryCheck(InventaryID);
-
         }
 
-        public ObservableCollection<string> MyValue => modelMain.ValueInventary;
+        public string MyValue
+        {
+            get => myValue; 
+            set
+            {
+                myValue = modelMain.ValueInventary;
+                OnPropertyChanged();
+            }
+        }
+
+        //public ObservableCollection<string> MyValue => modelMain.ValueInventary;
 
 
         public event PropertyChangedEventHandler PropertyChanged;

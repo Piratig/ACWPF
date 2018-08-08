@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:ACWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <!--<Window.DataContext>
+    <Window.DataContext>
         <local:MainVM/>
-    </Window.DataContext>-->
+    </Window.DataContext>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="1, 0" StartPoint="0, 0">
@@ -38,10 +38,10 @@
                         <ColumnDefinition Width="103*"/>
                     </Grid.ColumnDefinitions>
                     <DataGrid HorizontalAlignment="Stretch"  Margin="10,10,10,10" Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="5"/>
-                    <ListBox Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,38,10,10" VerticalAlignment="Stretch" Grid.ColumnSpan="3" SelectedItem="{Binding SelectedInventary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  >
+                    <ListBox Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,38,10,10" VerticalAlignment="Stretch" Grid.ColumnSpan="3"   >
                         <FlowDocument>
                             <Paragraph>
-                                <Run Text=""/>
+                                <Run Text="{Binding MyValue}"/>
                             </Paragraph>
                         </FlowDocument>
                     </ListBox>

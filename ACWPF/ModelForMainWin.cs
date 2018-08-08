@@ -77,11 +77,20 @@ namespace ACWPF
             }
         }
 
-        public  ObservableCollection<string> valueInventary = new ObservableCollection<string>();
-        public  ObservableCollection<string> ValueInventary;
+        private string valueInventary;
+        public string ValueInventary
+        {
+            get => valueInventary;  
+            set
+            {
+                valueInventary = value;
+                if (PropertyChanged != null)
+                    OnPropertyChanged("ValueInventary");
+            }
+        }
+        
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        public void OnPropertyChanged(string prop)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
@@ -105,7 +114,7 @@ namespace ACWPF
                     while (sqlReader.Read())
                     {
                         string date = Convert.ToString(sqlReader["DeliveryDate"]);
-                        ValueInventary.Insert(0, Convert.ToString(sqlReader["InventaryNumber"]) + " | " + Convert.ToString(sqlReader["Cartridge"]) + " | " + date.Substring(0, 10) + "\n");
+                        ValueInventary = Convert.ToString(sqlReader["InventaryNumber"]) + " | " + Convert.ToString(sqlReader["Cartridge"]) + " | " + date.Substring(0, 10) + "\n";
                         OnPropertyChanged("ValueInventary");
                     }
                 }
@@ -180,5 +189,7 @@ namespace ACWPF
         {
             
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
