@@ -15,57 +15,30 @@ namespace ACWPF
 {
     class MainVM : INotifyPropertyChanged
     {
-        private string inventaryID;
-        private string myValue;
-        private ModelForMainWin modelMain;
-        public ObservableCollection<ModelForMainWin> Requests { get; set; }
-        public ModelForMainWin SelectedRequest
+        private ModelForMainWin selectedInventaryInscription;
+        public ObservableCollection<ModelForMainWin> Inscription { get; set; }
+        public ModelForMainWin SelectedInventaryInscription
         {
-            get { return modelMain; }
+            get { return selectedInventaryInscription; }
             set
             {
-                modelMain = value;
-                OnPropertyChanged("SelectedRequest");
+                selectedInventaryInscription = value;
+                OnPropertyChanged("SelectedInventaryInscription");
             }
         }
-        //public string SelectedInventary
-        //{
-        //    get { return modelMain.ValueInventary; }
-        //    set
-        //    {
-        //        modelMain.ValueInventary = value;
-        //        OnPropertyChanged("SelectedInventary");
-        //    }
-        //}
-
-        public string InventaryID
+        public MainVM()
         {
-            get { return inventaryID; }
-            set
+            Inscription = new ObservableCollection<ModelForMainWin>
             {
-                inventaryID = value;
-                OnPropertyChanged("InventaryID");
-            }
+                new ModelForMainWin { InventaryID = "Инвентарный номер", Cartridge = "Картридж"}
+            };
         }
 
-        public void InventaryIdCheck()
+        public void CheckInventary()
         {
             ModelForMainWin model = new ModelForMainWin();
-            model.InventaryCheck(InventaryID);
+            model.InventaryCheck(selectedInventaryInscription.InventaryID);
         }
-
-        public string MyValue
-        {
-            get => myValue; 
-            set
-            {
-                myValue = modelMain.ValueInventary;
-                OnPropertyChanged();
-            }
-        }
-
-        //public ObservableCollection<string> MyValue => modelMain.ValueInventary;
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")

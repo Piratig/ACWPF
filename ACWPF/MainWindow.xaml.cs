@@ -30,7 +30,7 @@ namespace ACWPF
 
         private void InventaryCheck_Click(object sender, RoutedEventArgs e)
         {
-            ((MainVM)DataContext).InventaryIdCheck();
+            ((MainVM)DataContext).CheckInventary();
         }
     }
 }
