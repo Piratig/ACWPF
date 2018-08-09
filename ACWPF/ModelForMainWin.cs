@@ -35,16 +35,17 @@ namespace ACWPF
                 OnPropertyChanged("Cartridge");
             }
         }
+        public ModelForMainWin()
+            {
+                
+            }
 
         public void InventaryCheck(string stringInventary)
         {
             SqlConnection sqlConnection;
-            //string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\DB\Database1.mdf;Integrated Security=True";
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
+            sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=A:\MyPrograms\Annealing\ACWPF\ACWPF\CartridgeBase.mdf");
             sqlConnection.Open();
 
-            if (InventaryID != null && InventaryID != "")
-            {
                 SqlDataReader sqlReader = null;
                 string str = String.Format("SELECT InventaryNumber, Cartridge, DeliveryDate FROM [Cartridges] WHERE InventaryNumber = N'{0}' AND DeliveryDate = (SELECT MAX(DeliveryDate) FROM [Cartridges])", stringInventary);
                 SqlCommand command = new SqlCommand(str, sqlConnection);
@@ -57,6 +58,7 @@ namespace ACWPF
                         string date = Convert.ToString(sqlReader["DeliveryDate"]);
                         InventaryID = Convert.ToString(sqlReader["InventaryNumber"]);
                         Cartridge =  Convert.ToString(sqlReader["Cartridge"]);
+                    OnPropertyChanged("SelectedInventaryInscription");
                     }
                 }
                 catch (Exception ex)
@@ -68,11 +70,6 @@ namespace ACWPF
                     if (sqlReader != null)
                         sqlReader.Close();
                 }
-            }
-            else
-            {
-                MessageBox.Show("Поле не заполнено!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

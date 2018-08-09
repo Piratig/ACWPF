@@ -37,7 +37,14 @@ namespace ACWPF
         public void CheckInventary()
         {
             ModelForMainWin model = new ModelForMainWin();
-            model.InventaryCheck(selectedInventaryInscription.InventaryID);
+            if (selectedInventaryInscription.InventaryID != null && selectedInventaryInscription.InventaryID != "")
+            {
+                model.InventaryCheck(selectedInventaryInscription.InventaryID);
+            }
+            else
+            {
+                MessageBox.Show("Поле не заполнено!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
