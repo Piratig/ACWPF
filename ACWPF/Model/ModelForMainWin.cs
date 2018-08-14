@@ -17,6 +17,7 @@ namespace ACWPF
     {
         private string inventaryID;
         private string cartridge;
+        private string dateForCheck;
         public string InventaryID
         {
             get { return inventaryID; }
@@ -35,6 +36,11 @@ namespace ACWPF
                 OnPropertyChanged("Cartridge");
             }
         }
+        public string DateForCheck
+        {
+            get { }
+            set { }
+        }
         public ModelForMainWin()
             {
                 
@@ -43,7 +49,7 @@ namespace ACWPF
         public void InventaryCheck(string stringInventary)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=A:\MyPrograms\Annealing\ACWPF\ACWPF\CartridgeBase.mdf");
+            sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\his19\Documents\GitHub\ACWPF\ACWPF\CartridgeBase.mdf");
             sqlConnection.Open();
 
                 SqlDataReader sqlReader = null;

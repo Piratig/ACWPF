@@ -84,8 +84,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MainVM.cs" />
-    <Compile Include="ModelForMainWin.cs" />
+    <Compile Include="ViewModel\MainVM.cs" />
+    <Compile Include="Model\ModelForMainWin.cs" />
     <Compile Include="Request.xaml.cs">
       <DependentUpon>Request.xaml</DependentUpon>
     </Compile>
@@ -153,6 +153,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

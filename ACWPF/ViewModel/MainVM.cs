@@ -40,6 +40,7 @@ namespace ACWPF
             if (selectedInventaryInscription.InventaryID != null && selectedInventaryInscription.InventaryID != "")
             {
                 model.InventaryCheck(selectedInventaryInscription.InventaryID);
+                selectedInventaryInscription.Cartridge = model.Cartridge;
             }
             else
             {
