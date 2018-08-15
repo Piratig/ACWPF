@@ -23,5 +23,10 @@ namespace ACWPF
         {
             InitializeComponent();
         }
+
+        private void BildReport_Click(object sender, RoutedEventArgs e)
+        {
+            ((RequestVM)DataContext);
+        }
     }
 }

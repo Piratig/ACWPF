@@ -16,8 +16,13 @@ namespace ACWPF
     class ModelForMainWin : INotifyPropertyChanged
     {
         private string inventaryID;
-        private string cartridge;
+        private string cartridgeForCheck;
         private string dateForCheck;
+        private string requestID;
+        private string department;
+        private string cartridge;
+        private string requestDate;
+        private string status;
         public string InventaryID
         {
             get { return inventaryID; }
@@ -25,6 +30,42 @@ namespace ACWPF
             {
                 inventaryID = value;
                 OnPropertyChanged("InventaryID");
+            }
+        }
+        public string CartridgeForCheck
+        {
+            get { return cartridgeForCheck; }
+            set
+            {
+                cartridgeForCheck = value;
+                OnPropertyChanged("CartridgeForCheck");
+            }
+        }
+        public string DateForCheck
+        {
+            get { return dateForCheck; }
+            set
+            {
+                dateForCheck = value;
+                OnPropertyChanged("DateForCheck");
+            }
+        }
+        public string RequestID
+        {
+            get { return requestID; }
+            set
+            {
+                requestID = value;
+                OnPropertyChanged("RequestID");
+            }
+        }
+        public string Department
+        {
+            get { return department; }
+            set
+            {
+                department = value;
+                OnPropertyChanged("Department");
             }
         }
         public string Cartridge
@@ -36,20 +77,30 @@ namespace ACWPF
                 OnPropertyChanged("Cartridge");
             }
         }
-        public string DateForCheck
+        public string RequestDate
         {
-            get { }
-            set { }
-        }
-        public ModelForMainWin()
+            get { return requestDate; }
+            set
             {
-                
+                requestDate = value;
+                OnPropertyChanged("RequestDate");
             }
+        }
+        public string Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                OnPropertyChanged("Status");
+            }
+        }
+
+        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
+
 
         public void InventaryCheck(string stringInventary)
         {
-            SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\his19\Documents\GitHub\ACWPF\ACWPF\CartridgeBase.mdf");
             sqlConnection.Open();
 
                 SqlDataReader sqlReader = null;
@@ -61,9 +112,9 @@ namespace ACWPF
                     sqlReader = command.ExecuteReader();
                     while (sqlReader.Read())
                     {
-                        string date = Convert.ToString(sqlReader["DeliveryDate"]);
+                        DateForCheck = Convert.ToString(sqlReader["DeliveryDate"]).Substring(0,10);
                         InventaryID = Convert.ToString(sqlReader["InventaryNumber"]);
-                        Cartridge =  Convert.ToString(sqlReader["Cartridge"]);
+                        CartridgeForCheck =  Convert.ToString(sqlReader["Cartridge"]);
                     OnPropertyChanged("SelectedInventaryInscription");
                     }
                 }
@@ -76,6 +127,39 @@ namespace ACWPF
                     if (sqlReader != null)
                         sqlReader.Close();
                 }
+            sqlConnection.Close();
+        }
+
+        public void AddRegister(string stringStatus, string id, string dep, string cart, string date)
+        {
+            sqlConnection.Open();
+            Status = stringStatus;
+            RequestID = id;
+            Department = dep;
+            Cartridge = cart;
+            RequestDate = date;
+            if (RequestID != "" && RequestID != null &&
+                InventaryID != "" && InventaryID != null &&
+                Department != "" && Department != null &&
+                Cartridge != "" && Cartridge != null &&
+                RequestDate != "" && RequestDate != null)
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO [Cartridges] (RequestId, InventaryNumber, Department, Cartridge, DeliveryDate, Status)VALUES(@RequestId, @InventaryNumber, @Department, @Cartridge, @DeliveryDate, @Status)", sqlConnection);
+                command.Parameters.AddWithValue("RequestId", RequestID);
+                command.Parameters.AddWithValue("InventaryNumber", InventaryID);
+                command.Parameters.AddWithValue("Department", Department);
+                command.Parameters.AddWithValue("Cartridge", Cartridge);
+                command.Parameters.AddWithValue("DeliveryDate", RequestDate);
+                command.Parameters.AddWithValue("Status", Status);
+                command.ExecuteNonQuery();
+            }
+            sqlConnection.Close();
+        }
+
+        public void RequestWindowOpen()
+        {
+            Request req = new Request();
+            req.ShowDialog();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

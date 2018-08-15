@@ -32,5 +32,30 @@ namespace ACWPF
         {
             ((MainVM)DataContext).CheckInventary();
         }
+
+        private void Extarder_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainVM)DataContext).AddRegister("Выдано");
+        }
+
+        private void OrderFromStock_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainVM)DataContext).AddRegister("Заказано со склада");
+        }
+
+        private void Reserve_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainVM)DataContext).AddRegister("Резерв");
+        }
+
+        private void Purchase_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainVM)DataContext).AddRegister("Закупка");
+        }
+
+        private void OpenRequest_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainVM)DataContext).OpenRequest();
+        }
     }
 }

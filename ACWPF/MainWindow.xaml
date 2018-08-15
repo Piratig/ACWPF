@@ -43,7 +43,8 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Padding="5" FontSize="18" Text="{Binding Path=InventaryID}" />
-                                    <TextBlock Padding="5" FontSize="18" Text="{Binding Path=Cartridge}" />
+                                    <TextBlock Padding="5" FontSize="18" Text="{Binding Path=CartridgeForCheck}" />
+                                    <TextBlock Padding="5" FontSize="18" Text="{Binding Path=DateForCheck}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -51,14 +52,16 @@
                     <TextBox DataContext="{Binding SelectedInventaryInscription}" Grid.Column="3" HorizontalAlignment="Stretch" Height="23" Margin="1,10,102,0" Text="{Binding InventaryID, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Grid.ColumnSpan="2" />
                     <Button Content="Проверка" Grid.Column="4" HorizontalAlignment="Stretch" Margin="13,10,10,0" VerticalAlignment="Top" Height="23" Click="InventaryCheck_Click"/>
                     <Label Content="Инвентарный номер" Grid.Column="2" HorizontalAlignment="Stretch" Margin="10,6,5,0" VerticalAlignment="Top" Height="27"/>
-                    <TextBox HorizontalAlignment="Stretch" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="1"/>
-                    <TextBox HorizontalAlignment="Stretch" Height="23" Margin="0,38,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="1"/>
-                    <TextBox HorizontalAlignment="Stretch" Height="23" Margin="0,66,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="1"/>
-                    <DatePicker HorizontalAlignment="Stretch" Margin="0,94,10,0" VerticalAlignment="Top" Grid.Column="1" Height="24"/>
-                    <Button Content="Заказ со склада" HorizontalAlignment="Stretch" Margin="47,123,10,0" VerticalAlignment="Top" Grid.Column="1" Height="20" RenderTransformOrigin="0.93,0.55"/>
-                    <Button Content="Выдать" HorizontalAlignment="Stretch" Margin="10,123,10,0" VerticalAlignment="Top" Height="20"/>
-                    <Button Content="Резерв" HorizontalAlignment="Stretch" Margin="10,149,10,0" VerticalAlignment="Top" Height="20"/>
-                    <Button Content="Закупка" HorizontalAlignment="Stretch" Margin="47,149,10,0" VerticalAlignment="Top"  Grid.Column="1" Height="20"/>
+                    <StackPanel Grid.Column="1" DataContext="{Binding SelectedInventaryInscription}">
+                        <TextBox HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Top" Margin="0,7,0,0" Text="{Binding RequestID, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Top" Margin="0,6,0,0" Text="{Binding Department, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Top" Margin="0,6,0,0" Text="{Binding Cartridge, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DatePicker HorizontalAlignment="Stretch"  VerticalAlignment="Top" Height="24" Margin="0,6,0,0" SelectedDate="{Binding RequestDate, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <Button Content="Заказ со склада" HorizontalAlignment="Stretch" Margin="47,123,10,0" VerticalAlignment="Top" Grid.Column="1" Height="20" RenderTransformOrigin="0.93,0.55" Click="OrderFromStock_Click"/>
+                    <Button Content="Выдать" HorizontalAlignment="Stretch" Margin="10,123,10,0" VerticalAlignment="Top" Height="20" Click="Extarder_Click" />
+                    <Button Content="Резерв" HorizontalAlignment="Stretch" Margin="10,149,10,0" VerticalAlignment="Top" Height="20" Click="Reserve_Click" />
+                    <Button Content="Закупка" HorizontalAlignment="Stretch" Margin="47,149,10,0" VerticalAlignment="Top"  Grid.Column="1" Height="20" Click="Purchase_Click" />
                     <Label Content="№ заявки" HorizontalAlignment="Stretch" Margin="10,6,5,0" VerticalAlignment="Top"/>
                     <Label Content="Служба" HorizontalAlignment="Stretch" Margin="10,34,5,0" VerticalAlignment="Top"/>
                     <Label Content="Картридж" HorizontalAlignment="Stretch" Margin="10,62,5,0" VerticalAlignment="Top"/>
@@ -66,7 +69,7 @@
                     <Label Content="Не все поля заполнены" HorizontalAlignment="Left" Height="35" Margin="168,161,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2" Foreground="Red" Visibility="Hidden"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Изменить запись">
+            <TabItem Header="Изменить запись" IsEnabled="False" Visibility="Hidden">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="163*"/>
@@ -74,7 +77,7 @@
                     </Grid.ColumnDefinitions>
                 </Grid>
             </TabItem>
-            <TabItem Header="Удалить запись">
+            <TabItem Header="Удалить запись" IsEnabled="False" Visibility="Hidden">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="163*"/>
@@ -83,7 +86,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="Отчет" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Grid.Row="0"/>
+        <Button Content="Отчет" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Grid.Row="0" Click="OpenRequest_Click"/>
         <Button Content="О программе" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Margin="80,0,0,0" Grid.Row="0"/>
         <Button Content="Выход" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80" Margin="160,0,0,0" Grid.Row="0"/>
     </Grid>

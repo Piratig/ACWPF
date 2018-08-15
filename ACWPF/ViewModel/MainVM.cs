@@ -15,6 +15,7 @@ namespace ACWPF
 {
     class MainVM : INotifyPropertyChanged
     {
+        ModelForMainWin model = new ModelForMainWin();
         private ModelForMainWin selectedInventaryInscription;
         public ObservableCollection<ModelForMainWin> Inscription { get; set; }
         public ModelForMainWin SelectedInventaryInscription
@@ -30,22 +31,41 @@ namespace ACWPF
         {
             Inscription = new ObservableCollection<ModelForMainWin>
             {
-                new ModelForMainWin { InventaryID = "Инвентарный номер", Cartridge = "Картридж"}
+                new ModelForMainWin { InventaryID = "Инвентарный номер", CartridgeForCheck = "Картридж", DateForCheck = "Дата"}
             };
         }
 
         public void CheckInventary()
         {
-            ModelForMainWin model = new ModelForMainWin();
             if (selectedInventaryInscription.InventaryID != null && selectedInventaryInscription.InventaryID != "")
             {
                 model.InventaryCheck(selectedInventaryInscription.InventaryID);
-                selectedInventaryInscription.Cartridge = model.Cartridge;
+                selectedInventaryInscription.CartridgeForCheck = model.CartridgeForCheck;
+                selectedInventaryInscription.DateForCheck = model.DateForCheck;
             }
             else
             {
                 MessageBox.Show("Поле не заполнено!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        public void AddRegister(string stat)
+        {
+            if (selectedInventaryInscription.RequestID != null && selectedInventaryInscription.RequestID != "" &&
+                selectedInventaryInscription.Department != null && selectedInventaryInscription.Department != "" &&
+                selectedInventaryInscription.Cartridge != null && selectedInventaryInscription.Cartridge != "" )
+            {
+                model.AddRegister(stat, selectedInventaryInscription.RequestID, selectedInventaryInscription.Department, selectedInventaryInscription.Cartridge, selectedInventaryInscription.RequestDate);
+            }
+            else
+            {
+                MessageBox.Show("Поля не заполнены!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void OpenRequest()
+        {
+            model.RequestWindowOpen();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

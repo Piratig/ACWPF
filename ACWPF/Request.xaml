@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:ACWPF"
         mc:Ignorable="d"
         Title="Request" Height="450" Width="800">
-    <!--<Window.DataContext>
-        <local:MainVM/>
-    </Window.DataContext>-->
+    <Window.DataContext>
+        <local:RequestVM/>
+    </Window.DataContext>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="1, 0" StartPoint="0, 0">
@@ -36,7 +36,13 @@
                     </Grid.RowDefinitions>
                     <TextBox HorizontalAlignment="Stretch" Height="23" Margin="68,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <DatePicker HorizontalAlignment="Stretch" Margin="68,44,0,0" VerticalAlignment="Top" Height="24"/>
-                    <DataGrid HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="4" />
+                    <DataGrid HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="4" ItemsSource="{Binding InscriptionRequest}"  DataContext="{Binding SelectedDepartmentRequest}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Служба" Binding="{Binding Department}"/>
+                            <DataGridTextColumn Header="Картридж" Binding="{Binding Cartridge}"/>
+                            <DataGridTextColumn Header="Колличество" />
+                        </DataGrid.Columns>
+                    </DataGrid> 
                     <Button Content="Составить отчет" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="131" Grid.Column="3" Height="23"/>
                     <Button Content="Экспорт отчета" HorizontalAlignment="Left" Margin="0,44,0,0" VerticalAlignment="Top" Width="131" Grid.Column="3" Height="24"/>
                     <DatePicker HorizontalAlignment="Stretch" Margin="0,44,10,0" VerticalAlignment="Top" Height="24" Grid.Column="2"/>
@@ -60,7 +66,7 @@
                     <TextBox HorizontalAlignment="Stretch" Height="23" Margin="80,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <DatePicker HorizontalAlignment="Stretch" Margin="80,44,0,0" VerticalAlignment="Top" Height="24"/>
                     <DataGrid HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="4" />
-                    <Button Content="Составить отчет" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="131" Grid.Column="3" Height="23"/>
+                    <Button Content="Составить отчет" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="131" Grid.Column="3" Height="23" Click="BildReport_Click"/>
                     <Button Content="Экспорт отчета" HorizontalAlignment="Left" Margin="0,44,0,0" VerticalAlignment="Top" Width="131" Grid.Column="3" Height="24"/>
                     <DatePicker HorizontalAlignment="Stretch" Margin="0,44,10,0" VerticalAlignment="Top" Height="24" Grid.Column="2"/>
                     <Label Content="Картридж" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Height="26" Width="65"/>
