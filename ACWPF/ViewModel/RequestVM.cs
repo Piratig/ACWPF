@@ -37,7 +37,7 @@ namespace ACWPF
         private void Initialize()
         {
             InscriptionRequest = new ObservableCollection<ModelForRequest>();
-            InscriptionRequest.Add(new ModelForRequest(" ", " ", " "));
+            InscriptionRequest.Add(new ModelForRequest(" "));
         }
 
 
@@ -48,11 +48,12 @@ namespace ACWPF
             {
                 for (int i = 0; i < model.data.Length; i++)
                 {
-                    InscriptionRequest.Add(new ModelForRequest(model.data[0], model.data[1], model.data[2]));
-                    //SelectedDepartmentRequest = model;
-                    //SelectedDepartmentRequest.Department = model.data[0];
-                    //SelectedDepartmentRequest.Cartridge = model.data[1];
-                    //SelectedDepartmentRequest.Quantaty = model.data[2];
+                    SelectedDepartmentRequest = model;
+                    SelectedDepartmentRequest.Department = model.data[0];
+                    SelectedDepartmentRequest.Cartridge = model.data[1];
+                    SelectedDepartmentRequest.Quantaty = model.data[2];
+                    InscriptionRequest.Add(new ModelForRequest());
+
                 }
             }
         }

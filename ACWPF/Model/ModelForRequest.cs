@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -108,38 +109,37 @@ namespace ACWPF
         public string[] data = new string[3];
 
 
-        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
-        private string v;
+        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\his19\Documents\GitHub\ACWPF\ACWPF\CartridgeBase.mdf");
+        private string v1;
+        private string v2;
+        private string v3;
 
-        public ModelForRequest(string v, string v1, string v2)
+        public ModelForRequest(string v1)
         {
-            this.v = v;
-        }
-
-        public ModelForRequest(string v)
-        {
+            this.v1 = v1;
         }
 
         public ModelForRequest()
         {
         }
 
-        public void DepartmentRequest(string dep, string sins, string till)
+        public async void DepartmentRequest(string dep, string sins, string till)
         {
             Department = dep;
             DateSins = sins;
             DateTill = till;
-            SqlDataReader sqlReader = null;
+            sqlConnection.Open();
             string str = String.Format("SELECT [Department], [Cartridge], COUNT(*) FROM [Cartridges] WHERE [Department] = N'{0}' AND [DeliveryDate] BETWEEN @DateSins AND @DateTill GROUP BY [Cartridge], [Department]", Department);
             SqlCommand command = new SqlCommand(str, sqlConnection);
-            command.Parameters.AddWithValue("Department", Department);
+            //command.Parameters.AddWithValue("Department", Department);
             command.Parameters.AddWithValue("DateSins", DateSins);
             command.Parameters.AddWithValue("DateTill", DateTill);
-            command.ExecuteNonQueryAsync();
+            await command.ExecuteNonQueryAsync();
+            SqlDataReader sqlReader = await command.ExecuteReaderAsync();
+
 
             try
             {
-                sqlReader =  command.ExecuteReader();
                 while ( sqlReader.Read())
                 {
                     data[0] = sqlReader[0].ToString();
@@ -155,6 +155,7 @@ namespace ACWPF
             {
                 if (sqlReader != null)
                     sqlReader.Close();
+                sqlConnection.Close();
             }
         }
 

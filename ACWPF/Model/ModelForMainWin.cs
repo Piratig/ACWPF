@@ -47,7 +47,7 @@ namespace ACWPF
             set
             {
                 dateForCheck = value;
-                OnPropertyChanged("DateForCheck");
+               OnPropertyChanged("DateForCheck");
             }
         }
         public string RequestID
@@ -96,7 +96,7 @@ namespace ACWPF
             }
         }
 
-        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
+        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\his19\Documents\GitHub\ACWPF\ACWPF\CartridgeBase.mdf");
 
 
         public void InventaryCheck(string stringInventary)
