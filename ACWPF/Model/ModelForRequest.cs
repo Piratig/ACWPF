@@ -23,6 +23,7 @@ namespace ACWPF
         private string cartridge;
         private string requestDate;
         private string status;
+        private string quataty;
         public string InventaryID
         {
             get { return inventaryID; }
@@ -95,26 +96,52 @@ namespace ACWPF
                 OnPropertyChanged("Status");
             }
         }
+        public string Quantaty
+        {
+            get { return quataty; }
+            set
+            {
+                quataty = value;
+                OnPropertyChanged("Quantaty");
+            }
+        }
+        public string[] data = new string[3];
+
 
         SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
+        private string v;
 
-        public void DepartmentRequest(string dep)
+        public ModelForRequest(string v, string v1, string v2)
+        {
+            this.v = v;
+        }
+
+        public ModelForRequest(string v)
+        {
+        }
+
+        public ModelForRequest()
+        {
+        }
+
+        public void DepartmentRequest(string dep, string sins, string till)
         {
             Department = dep;
+            DateSins = sins;
+            DateTill = till;
             SqlDataReader sqlReader = null;
             string str = String.Format("SELECT [Department], [Cartridge], COUNT(*) FROM [Cartridges] WHERE [Department] = N'{0}' AND [DeliveryDate] BETWEEN @DateSins AND @DateTill GROUP BY [Cartridge], [Department]", Department);
             SqlCommand command = new SqlCommand(str, sqlConnection);
-            //command.Parameters.AddWithValue("Department", Department);
+            command.Parameters.AddWithValue("Department", Department);
             command.Parameters.AddWithValue("DateSins", DateSins);
             command.Parameters.AddWithValue("DateTill", DateTill);
-            command.ExecuteNonQuery();
+            command.ExecuteNonQueryAsync();
 
             try
             {
                 sqlReader =  command.ExecuteReader();
                 while ( sqlReader.Read())
                 {
-                    string[] data = new string[4];
                     data[0] = sqlReader[0].ToString();
                     data[1] = sqlReader[1].ToString();
                     data[2] = sqlReader[2].ToString();
