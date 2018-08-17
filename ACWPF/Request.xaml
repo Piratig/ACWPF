@@ -38,7 +38,7 @@
                     <DatePicker HorizontalAlignment="Stretch" Margin="68,44,0,0" VerticalAlignment="Top" Height="24" DataContext="{Binding SelectedDepartmentRequest}" SelectedDate="{Binding DateSins, UpdateSourceTrigger=PropertyChanged}"/>
                     <DataGrid HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="4" ItemsSource="{Binding InscriptionRequest}"  SelectedItem="{Binding SelectedDepartmentRequest}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Служба" Binding="{Binding Department}" Width="Auto"/>
+                            <DataGridTextColumn Header="Служба" Binding="{Binding Department}" Width="Auto" IsReadOnly="False"/>
                             <DataGridTextColumn Header="Картридж" Binding="{Binding Cartridge}" Width="Auto"/>
                             <DataGridTextColumn Header="Колличество" Binding="{Binding Quantaty}" Width="*"/>
                         </DataGrid.Columns>

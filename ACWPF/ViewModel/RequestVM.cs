@@ -17,7 +17,7 @@ namespace ACWPF
     {
         ModelForRequest model = new ModelForRequest();
         private ModelForRequest selectedDepartmentRequest;
-        public ObservableCollection<ModelForRequest> InscriptionRequest { get; set; } 
+        private ObservableCollection<ModelForRequest> inscriptionRequest; 
         public ModelForRequest SelectedDepartmentRequest
         {
             get { return selectedDepartmentRequest; }
@@ -25,6 +25,15 @@ namespace ACWPF
             {
                 selectedDepartmentRequest = value;
                 OnPropertyChanged("SelectedDepartmentRequest");
+            }
+        }
+        public ObservableCollection<ModelForRequest> InscriptionRequest
+        {
+            get { return inscriptionRequest; }
+            set
+            {
+                inscriptionRequest = value;
+                OnPropertyChanged("InscriptionRequest");
             }
         }
 
@@ -37,23 +46,18 @@ namespace ACWPF
         private void Initialize()
         {
             InscriptionRequest = new ObservableCollection<ModelForRequest>();
-            InscriptionRequest.Add(new ModelForRequest(" "));
-        }
+            inscriptionRequest.Add(new ModelForRequest("aaaaa"));
+    }
 
 
 
-        public void BildDepartmentReport()
+    public void BildDepartmentReport()
         {
             model.DepartmentRequest(selectedDepartmentRequest.Department, SelectedDepartmentRequest.DateSins, SelectedDepartmentRequest.DateTill);
             {
                 for (int i = 0; i < model.data.Length; i++)
                 {
-                    SelectedDepartmentRequest = model;
-                    SelectedDepartmentRequest.Department = model.data[0];
-                    SelectedDepartmentRequest.Cartridge = model.data[1];
-                    SelectedDepartmentRequest.Quantaty = model.data[2];
-                    InscriptionRequest.Add(new ModelForRequest());
-
+                    inscriptionRequest.Add(new ModelForRequest());
                 }
             }
         }

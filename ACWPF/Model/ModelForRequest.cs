@@ -109,10 +109,8 @@ namespace ACWPF
         public string[] data = new string[3];
 
 
-        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\his19\Documents\GitHub\ACWPF\ACWPF\CartridgeBase.mdf");
+        SqlConnection sqlConnection = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\kharkovskiy-is\source\repos\Accounting cartridges\ACWPF\ACWPF\CartridgeBase.mdf");
         private string v1;
-        private string v2;
-        private string v3;
 
         public ModelForRequest(string v1)
         {
@@ -121,6 +119,7 @@ namespace ACWPF
 
         public ModelForRequest()
         {
+
         }
 
         public async void DepartmentRequest(string dep, string sins, string till)
